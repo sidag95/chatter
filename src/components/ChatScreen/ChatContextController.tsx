@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useCallback} from "react";
+import { useRealtimeConnection } from "../Api/useRealtimeConnnection";
 import { ChatContext } from "./ChatContext"
 import { MessageList, ChatContextControllerProps, MessageBody, Message } from "./types";
 
@@ -8,6 +9,21 @@ export function ChatContextController(props: ChatContextControllerProps) {
   const [hasLoaded, setHasLoaded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  
+  const onData = useCallback(
+    (messageBody: any) => {
+      const message: Message = {
+        id: `${Math.random()}`,
+        authorId: "2",
+        message: messageBody,
+        type: "string"
+      }
+      setChat(chat => [...chat, message])
+    },
+    []
+  )
+  
+  const send = useRealtimeConnection({ onData })
 
   async function getChat(id: string) {
     try {
@@ -60,9 +76,10 @@ export function ChatContextController(props: ChatContextControllerProps) {
       setHasLoaded(false)
       setError(null)
       // await data
+      send(messageBody.message)
       await new Promise((resolve) => { setTimeout(resolve, 300) }) // fake request
       const message: Message = { ...messageBody, id: `${Math.random()}` }
-      setChat([...chat, message])
+      setChat(chat => [...chat, message])
       setHasLoaded(true)
       setIsLoading(false)
       // unset isLoading

@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, makeStyles } from '@material-ui/core';
 import { ContactList } from "../ContactList/ContactList";
-import { ContactListController } from "../ContactList/ContactListController";
 import { Profile } from "../Profile/Profile";
 import { ProfileController } from "../Profile/ProfileController";
 import { Search } from "../Search/Search";
@@ -24,9 +23,7 @@ export function NavigationScreen(props: NavigationScreenProps) {
       <SearchController>
         <Search />
       </SearchController>
-      <ContactListController>
-        <ContactList {...props} />
-      </ContactListController>
+      <ContactList {...props} />
     </Box>
   );
 }

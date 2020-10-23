@@ -22,7 +22,7 @@ export function ChatScreen(props: ChatScreenProps) {
 
   useEffect(() => {
     getChat(chatId)
-  }, [chatId])
+  }, [chatId]) // eslint-disable-line
   
   if (!currentUser) {
     // log error
@@ -35,7 +35,7 @@ export function ChatScreen(props: ChatScreenProps) {
 
   // react window
   return (
-    <Box flex={1}>
+    <Box flex={1} overflow="auto">
       {chat.map(message => {
         const isMessageFromCurrentUser = currentUser.id === message.authorId
         return (

@@ -42,10 +42,10 @@ export function InputField(props: InputFieldProps) {
   const [message, setMessage] = useState<string>("")
   const { sendMessage } = useContext(ChatContext)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const messageBody: MessageBody = { message, type: "string", authorId: "1" }
     setMessage("")
-    sendMessage(messageBody)
+    await sendMessage(messageBody)
   }
 
 
@@ -64,7 +64,6 @@ export function InputField(props: InputFieldProps) {
         onKeyPress={keyPressEvent => {
           if (keyPressEvent.key === "Enter") {
             if (!keyPressEvent.shiftKey) {
-              debugger;
               keyPressEvent.preventDefault();
               handleSubmit();
             }

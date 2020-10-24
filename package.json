@@ -8,6 +8,7 @@
     "@theme-ui/color": "^0.3.1",
     "@theme-ui/presets": "^0.3.0",
     "eslint-config-react-app": "^5.2.1",
+    "lorem-ipsum": "^2.0.3",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-helmet": "^6.1.0",

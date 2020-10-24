@@ -28,4 +28,6 @@ export type RealtimeApiProps = {
 
 export type RealtimeConnectionProps = {
   onData: (message: any) => void;
+  id: string;
+  hasAuthorized: (message: string) => boolean;
 }

@@ -18,8 +18,8 @@ export type ChatContextConsumerProps = {
   chat: MessageList;
   hasLoaded: boolean;
   isLoading: boolean;
-  getChat: (id: string) => Promise<void>;
-  sendMessage: (message: MessageBody) => Promise<void>;
+  getChat: (id: string, currentUserId: string) => Promise<void>;
+  sendMessage: (currentUserId: string, message: MessageBody) => Promise<void>;
   error: Error | null;
 }
 

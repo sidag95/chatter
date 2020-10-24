@@ -1,4 +1,5 @@
 import React, {useState, useCallback} from "react";
+import { getDefaultChatMessages } from "../Api/mocks";
 import { useRealtimeConnection } from "../Api/useRealtimeConnnection";
 import { ChatContext } from "./ChatContext"
 import { MessageList, ChatContextControllerProps, MessageBody, Message } from "./types";
@@ -23,43 +24,21 @@ export function ChatContextController(props: ChatContextControllerProps) {
     []
   )
   
-  const send = useRealtimeConnection({ onData })
+  const hasAuthorized = useCallback(() => {
+    return true;
+  }, [])
 
-  async function getChat(id: string) {
+  const send = useRealtimeConnection({ onData, hasAuthorized, id: "1" })
+
+  async function getChat(id: string, currentUserId: string) {
     try {
       setIsLoading(true)
       setHasLoaded(false)
       setError(null)
       // await data
-      await new Promise((resolve) => {setTimeout(resolve, 300)}) // fake request
-      setChat([
-        {
-          id: "1",
-          authorId: "1",
-          message: "Hi guys",
-          type: "string"
-        },{
-          id: "2",
-          authorId: "2",
-          message: "Hi",
-          type: "string"
-        }, {
-          id: "3",
-          authorId: "1",
-          message: "What are you upto?",
-          type: "string"
-        }, {
-          id: "4",
-          authorId: "2",
-          message: "I am planning my next trip. How about you?",
-          type: "string"
-        }, {
-          id: "5",
-          authorId: "1",
-          message: "I am reading the autobiography of a yogi",
-          type: "string"
-        }
-      ])
+      await new Promise((resolve) => { setTimeout(resolve, 300) }) // fake request
+      const defaultChatList = getDefaultChatMessages(id, currentUserId)
+      setChat(defaultChatList)
       setHasLoaded(true)
       setIsLoading(false)
       // unset isLoading
@@ -70,13 +49,13 @@ export function ChatContextController(props: ChatContextControllerProps) {
     }
   }
 
-  async function sendMessage(messageBody: MessageBody) {
+  async function sendMessage(currentUserId: string, messageBody: MessageBody) {
     try {
       setIsLoading(true)
       setHasLoaded(false)
       setError(null)
       // await data
-      send(messageBody.message)
+      send(currentUserId, messageBody.message)
       await new Promise((resolve) => { setTimeout(resolve, 300) }) // fake request
       const message: Message = { ...messageBody, id: `${Math.random()}` }
       setChat(chat => [...chat, message])

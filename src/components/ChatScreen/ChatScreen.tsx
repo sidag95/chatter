@@ -21,8 +21,10 @@ export function ChatScreen(props: ChatScreenProps) {
   const styles = useStyles()
 
   useEffect(() => {
-    getChat(chatId)
-  }, [chatId]) // eslint-disable-line
+    if (currentUser && currentUser.id) {
+      getChat(chatId, currentUser.id)
+    }
+  }, [chatId, currentUser]) // eslint-disable-line
   
   if (!currentUser) {
     // log error

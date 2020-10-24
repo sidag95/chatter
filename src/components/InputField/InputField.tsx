@@ -45,7 +45,7 @@ export function InputField(props: InputFieldProps) {
   const handleSubmit = async () => {
     const messageBody: MessageBody = { message, type: "string", authorId: "1" }
     setMessage("")
-    await sendMessage(messageBody)
+    await sendMessage("1", messageBody)
   }
 
 

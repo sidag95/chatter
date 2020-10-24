@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { RealtimeConnectionProps } from "./types";
 
 export function useRealtimeConnection(props: RealtimeConnectionProps) {
-  const { onData } = props;
+  const { onData, id, hasAuthorized } = props;
   const [connection, setConnection] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
   useEffect(() => {
     if (!connection) {
@@ -24,16 +25,35 @@ export function useRealtimeConnection(props: RealtimeConnectionProps) {
   }, [connection, isConnected, isPending]) //eslint-disable-line
 
   useEffect(() => {
-    if (connection) {
-      connection.onmessage = (event: MessageEvent) => {
-        onData(event.data)
+    if (connection && isConnected) {
+      if (!isAuthorized) {
+        connection.send(JSON.stringify({id, message: "Authorize"}))
+      }
+      if (!connection.onmessage) {
+        connection.onmessage = (event: MessageEvent) => {
+          const { data } = event;
+          let message = ""
+          try {
+            message = JSON.parse(data).message
+          } catch (error) {
+            console.error(error)
+          }
+          if (!isAuthorized) {
+            if (hasAuthorized(message)) {
+              setIsAuthorized(true);
+              onData(message)
+            }
+          } else {
+            onData(message)
+          }
+        }
       }
     }
-  }, [connection, onData])
+  }, [connection, onData, id, isAuthorized, hasAuthorized, isConnected])
 
-  const sendMessage = (message: string) => {
+  const sendMessage = (id: string, message: string) => {
     if (connection && isConnected && !isPending) {
-      connection.send(message)
+      connection.send(JSON.stringify({ id, message }))
     } 
   }
 

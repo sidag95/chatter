@@ -54,7 +54,7 @@ export function useRealtimeConnection(props: RealtimeConnectionProps) {
   const sendMessage = (id: string, message: string) => {
     if (connection && isConnected && !isPending) {
       connection.send(JSON.stringify({ id, message }))
-    } 
+    }
   }
 
   return sendMessage

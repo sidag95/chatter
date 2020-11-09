@@ -5,14 +5,14 @@ import { UseChatProps, UseChat, MessageBody } from "./types";
 import { useChatContext } from "./useChatContext";
 
 export function useChat(props: UseChatProps): UseChat {
-  const { id } = props;
+  const { id, currentUserId } = props;
   const { chat, setChat } = useChatContext({ id });
 
   const onData = useCallback(
     (message: MessageBody) => {
-      setChat([{ ...message, id: `${Math.random()}` }], 0)
+      setChat([{ ...message, id }], 0)
     },
-    [id], // eslint-disable-line
+    [id, setChat], // eslint-disable-line
   )
 
   const { sendMessage: send, unsubscribe } = useRealtime(onData, id);
@@ -24,7 +24,7 @@ export function useChat(props: UseChatProps): UseChat {
   }
 
   const sendMessage = (messageParams: string, message: MessageBody) => {
-    setChat([{...message, id: `${Math.random()}`, message: "hi"}], 0)
+    setChat([{...message, id: currentUserId, message: "hi"}], 0)
     send(messageParams, message)
   }
 

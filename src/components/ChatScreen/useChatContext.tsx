@@ -8,7 +8,6 @@ export function useChatContext(props: UseChatContextProps): UseChatContext {
   const setChat = useCallback((message: MessageList, cursor: number) => {
     setChatData(chat => {
       const chatForId = chat[id] || [];
-      debugger;
       // use cursor to figure out chat position
       return { ...chat, [id]: [...chatForId, ...message] }
     });
@@ -18,5 +17,4 @@ export function useChatContext(props: UseChatContextProps): UseChatContext {
     chat: chatData[id] || [],
     setChat
   }
-  
 }

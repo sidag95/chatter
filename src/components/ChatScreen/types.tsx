@@ -29,6 +29,7 @@ export type ChatContextControllerProps = {
 
 export type UseChatProps = {
   id: string;
+  currentUserId: string;
 }
 
 export type UseChat = {

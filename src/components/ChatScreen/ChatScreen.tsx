@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from "react";
 import { Box, Card, CardContent, makeStyles } from "@material-ui/core"
 import { CurrentUserContext } from "../CurrentUser/CurrentUserContext";
 import {ChatScreenProps} from "../MessageScreen/types"
-import { ChatContext } from "./ChatContext";
 import { useChat } from "./useChat";
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +18,7 @@ export function ChatScreen(props: ChatScreenProps) {
   const { chatId } = props;
   const currentUser = useContext(CurrentUserContext);
   // const { chat, getChat } = useContext(ChatContext)
-  const { chat, fetchMessages } = useChat({id: chatId});
+  const { chat, fetchMessages } = useChat({id: chatId, currentUserId: currentUser.id});
   const styles = useStyles()
 
   useEffect(() => {

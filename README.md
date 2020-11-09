@@ -25,3 +25,9 @@ Following is the structure for a message
   type: ENUM<"TEXT">; // "the type of a message"
 }
 ```
+
+## Issues faced
+
+- Setting up Realtime Connection for all users
+  - Ability to set up one connection multiple subscriptions
+  - State update across chats

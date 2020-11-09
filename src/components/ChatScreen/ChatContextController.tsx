@@ -24,11 +24,11 @@ export function ChatContextController(props: ChatContextControllerProps) {
     []
   )
   
-  const hasAuthorized = useCallback(() => {
-    return true;
-  }, [])
+  // const hasAuthorized = useCallback(() => {
+  //   return true;
+  // }, [])
 
-  const send = useRealtimeConnection({ onData, hasAuthorized, id: "1" })
+  // const send = useRealtimeConnection({ onData, hasAuthorized, id: "1" })
 
   async function getChat(id: string, currentUserId: string) {
     try {
@@ -37,8 +37,8 @@ export function ChatContextController(props: ChatContextControllerProps) {
       setError(null)
       // await data
       await new Promise((resolve) => { setTimeout(resolve, 300) }) // fake request
-      const defaultChatList = getDefaultChatMessages(id, currentUserId)
-      setChat(defaultChatList)
+      // const defaultChatList = getDefaultChatMessages(id, currentUserId)
+      // setChat(defaultChatList)
       setHasLoaded(true)
       setIsLoading(false)
       // unset isLoading
@@ -55,7 +55,7 @@ export function ChatContextController(props: ChatContextControllerProps) {
       setHasLoaded(false)
       setError(null)
       // await data
-      send(currentUserId, messageBody.message)
+      // send(currentUserId, messageBody.message)
       await new Promise((resolve) => { setTimeout(resolve, 300) }) // fake request
       const message: Message = { ...messageBody, id: `${Math.random()}` }
       setChat(chat => [...chat, message])

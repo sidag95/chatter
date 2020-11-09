@@ -23,10 +23,10 @@ export const getDefaultContactList = () : Array<Contact> => {
   }));
 }
 
-export const getDefaultChatMessages = (contactId: string, currentUserId: string): MessageList => {
+export const getDefaultChatMessages = (contactId: string, cursor: number): MessageList => {
   const returnValues = Array.from({ length: 5 }, (_, index) => {
     const message = {
-      authorId: currentUserId,
+      authorId: contactId,
       message: lorem.generateSentences(index * 2),
       type: "string"
     }

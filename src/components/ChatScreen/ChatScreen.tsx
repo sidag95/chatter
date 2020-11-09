@@ -3,6 +3,7 @@ import { Box, Card, CardContent, makeStyles } from "@material-ui/core"
 import { CurrentUserContext } from "../CurrentUser/CurrentUserContext";
 import {ChatScreenProps} from "../MessageScreen/types"
 import { ChatContext } from "./ChatContext";
+import { useChat } from "./useChat";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -17,14 +18,15 @@ const useStyles = makeStyles(theme => ({
 export function ChatScreen(props: ChatScreenProps) {
   const { chatId } = props;
   const currentUser = useContext(CurrentUserContext);
-  const { chat, getChat } = useContext(ChatContext)
+  // const { chat, getChat } = useContext(ChatContext)
+  const { chat, fetchMessages } = useChat({id: chatId});
   const styles = useStyles()
 
   useEffect(() => {
-    if (currentUser && currentUser.id) {
-      getChat(chatId, currentUser.id)
+    if (currentUser) {
+      fetchMessages(0)
     }
-  }, [chatId, currentUser]) // eslint-disable-line
+  }, [chatId]) // eslint-disable-line
   
   if (!currentUser) {
     // log error

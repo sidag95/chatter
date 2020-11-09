@@ -26,3 +26,23 @@ export type ChatContextConsumerProps = {
 export type ChatContextControllerProps = {
   children: React.ReactNode;
 }
+
+export type UseChatProps = {
+  id: string;
+}
+
+export type UseChat = {
+  chat: MessageList;
+  sendMessage: (currentUserId: string, message: MessageBody) => void;
+  fetchMessages: (cursor: number) => Promise<void>;
+  unsubscribe: (sub: string) => void;
+}
+
+export type UseChatContextProps = {
+  id: string;
+}
+
+export type UseChatContext = {
+  chat: MessageList;
+  setChat: (message: MessageList, cursor: number) => void;
+}

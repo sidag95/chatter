@@ -1,66 +1,66 @@
 import { useEffect, useState } from "react";
-import { RealtimeConnectionProps } from "./types";
+import { Connection, RealtimeConnectionProps } from "./types";
 
-export function useRealtimeConnection(props: RealtimeConnectionProps) {
-  const { onData, id, hasAuthorized } = props;
-  const [connection, setConnection] = useState<WebSocket | null>(null);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [isPending, setIsPending] = useState<boolean>(false);
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+// export function useRealtimeConnection(props: RealtimeConnectionProps) {
+//   const { onData, id, hasAuthorized } = props;
+//   const [connection, setConnection] = useState<WebSocket | null>(null);
+//   const [isConnected, setIsConnected] = useState<boolean>(false);
+//   const [isPending, setIsPending] = useState<boolean>(false);
+//   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!connection) {
-      setIsConnected(false)
-      setIsPending(true)
-      setConnection(setupConnection())
-    } else {
-      if (isConnected) {
-        if (isPending) {
-          attachEventHandlers(connection, setIsConnected, setIsPending)
-        }
-      } else {
-        attachEventHandlers(connection, setIsConnected, setIsPending)
-      }
-    }
-  }, [connection, isConnected, isPending]) //eslint-disable-line
+//   useEffect(() => {
+//     if (!connection) {
+//       setIsConnected(false)
+//       setIsPending(true)
+//       setConnection(setupConnection())
+//     } else {
+//       if (isConnected) {
+//         if (isPending) {
+//           attachEventHandlers(connection, setIsConnected, setIsPending)
+//         }
+//       } else {
+//         attachEventHandlers(connection, setIsConnected, setIsPending)
+//       }
+//     }
+//   }, [connection, isConnected, isPending]) //eslint-disable-line
 
-  useEffect(() => {
-    if (connection && isConnected) {
-      if (!isAuthorized) {
-        connection.send(JSON.stringify({id, message: "Authorize"}))
-      }
-      if (!connection.onmessage) {
-        connection.onmessage = (event: MessageEvent) => {
-          const { data } = event;
-          let message = ""
-          try {
-            message = JSON.parse(data).message
-          } catch (error) {
-            console.error(error)
-          }
-          if (!isAuthorized) {
-            if (hasAuthorized(message)) {
-              setIsAuthorized(true);
-              onData(message)
-            }
-          } else {
-            onData(message)
-          }
-        }
-      }
-    }
-  }, [connection, onData, id, isAuthorized, hasAuthorized, isConnected])
+//   useEffect(() => {
+//     if (connection && isConnected) {
+//       if (!isAuthorized) {
+//         connection.send(JSON.stringify({id, message: "Authorize"}))
+//       }
+//       if (!connection.onmessage) {
+//         connection.onmessage = (event: MessageEvent) => {
+//           const { data } = event;
+//           let message = ""
+//           try {
+//             message = JSON.parse(data).message
+//           } catch (error) {
+//             console.error(error)
+//           }
+//           if (!isAuthorized) {
+//             if (hasAuthorized(message)) {
+//               setIsAuthorized(true);
+//               onData(message)
+//             }
+//           } else {
+//             onData(message)
+//           }
+//         }
+//       }
+//     }
+//   }, [connection, onData, id, isAuthorized, hasAuthorized, isConnected])
 
-  const sendMessage = (id: string, message: string) => {
-    if (connection && isConnected && !isPending) {
-      connection.send(JSON.stringify({ id, message }))
-    }
-  }
+//   const sendMessage = (id: string, message: string) => {
+//     if (connection && isConnected && !isPending) {
+//       connection.send(JSON.stringify({ id, message }))
+//     }
+//   }
 
-  return sendMessage
-}
+//   return sendMessage
+// }
 
-function setupConnection() {
+function setupConnection(): WebSocket {
   return new WebSocket("wss://echo.websocket.org")
 }
 
@@ -81,4 +81,25 @@ function attachEventHandlers(connection: WebSocket, setIsConnected: (flag: boole
     setIsPending(false)
     console.error("Error", event)
   }
+}
+
+let connectionCache: WebSocket | null = null;
+
+export function useRealtimeConnection(): Connection {
+  const [isConnected, setIsConnected] = useState<boolean>(false)
+
+ function unsubscribe() {
+    if (connectionCache) {
+      connectionCache.close();
+      setIsConnected(false);
+    }
+  }
+
+  if (connectionCache) {
+    return { connection: connectionCache, isConnected, setIsConnected, unsubscribe };
+  }
+
+  connectionCache = setupConnection();
+
+  return {connection: connectionCache, isConnected, setIsConnected, unsubscribe};
 }

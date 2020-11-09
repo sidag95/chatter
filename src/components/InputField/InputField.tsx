@@ -3,6 +3,7 @@ import {FormControl, FilledInput, makeStyles} from "@material-ui/core"
 import { InputFieldProps } from "./types";
 import { ChatContext } from "../ChatScreen/ChatContext";
 import { MessageBody } from "../ChatScreen/types";
+import { useChat } from "../ChatScreen/useChat";
 
 const useStyles = makeStyles(theme => ({
   root: () => ({
@@ -38,9 +39,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function InputField(props: InputFieldProps) {
+  const { chatId } = props;
   const styles = useStyles()
   const [message, setMessage] = useState<string>("")
-  const { sendMessage } = useContext(ChatContext)
+  const { sendMessage } = useChat({id: chatId})
 
   const handleSubmit = async () => {
     const messageBody: MessageBody = { message, type: "string", authorId: "1" }

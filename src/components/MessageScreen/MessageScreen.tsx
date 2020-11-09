@@ -11,7 +11,7 @@ export function MessageScreen(props: MessageScreenProps) {
     <Box display="flex" flexDirection="column" height={1}>
       <Profile />
       <ChatScreen chatId={chatId} />
-      <InputField />
+      <InputField chatId={chatId} />
     </Box>
   )
 }

@@ -1,5 +1,6 @@
 export type InputFieldProps = {
-  styles?: Object
+  styles?: Object;
+  chatId: string;
 }
 
 export type InputFieldStyles = {

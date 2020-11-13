@@ -37,6 +37,7 @@ export type UseChat = {
   sendMessage: (currentUserId: string, message: MessageBody) => void;
   fetchMessages: (cursor: number) => Promise<void>;
   unsubscribe: (sub: string) => void;
+  populateMessages: () => Promise<void>;
 }
 
 export type UseChatContextProps = {

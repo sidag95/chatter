@@ -10,7 +10,7 @@ export function useChat(props: UseChatProps): UseChat {
 
   const onData = useCallback(
     (message: MessageBody) => {
-      setChat([{ ...message, id }], 0)
+      setChat([{ ...message, authorId: id, id: `${Math.random()}` }], 0)
     },
     [id, setChat], // eslint-disable-line
   )
@@ -24,9 +24,15 @@ export function useChat(props: UseChatProps): UseChat {
   }
 
   const sendMessage = (messageParams: string, message: MessageBody) => {
-    setChat([{...message, id: currentUserId, message: "hi"}], 0)
+    setChat([{...message, authorId: currentUserId, id: `${Math.random()}`}], 0)
     send(messageParams, message)
   }
 
-  return {chat, sendMessage, fetchMessages, unsubscribe}
+  const populateMessages = async () => {
+    if (!chat.length) {
+      fetchMessages(0);
+    }
+  }
+
+  return {chat, sendMessage, fetchMessages, populateMessages, unsubscribe}
 }

@@ -18,12 +18,12 @@ export function ChatScreen(props: ChatScreenProps) {
   const { chatId } = props;
   const currentUser = useContext(CurrentUserContext);
   // const { chat, getChat } = useContext(ChatContext)
-  const { chat, fetchMessages } = useChat({id: chatId, currentUserId: currentUser.id});
+  const { chat, populateMessages } = useChat({id: chatId, currentUserId: currentUser.id});
   const styles = useStyles()
 
   useEffect(() => {
     if (currentUser) {
-      fetchMessages(0)
+      populateMessages()
     }
   }, [chatId]) // eslint-disable-line
   

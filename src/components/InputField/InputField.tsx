@@ -1,8 +1,9 @@
 import React, {useContext, useState} from "react";
 import {FormControl, FilledInput, makeStyles} from "@material-ui/core"
 import { InputFieldProps } from "./types";
-import { ChatContext } from "../ChatScreen/ChatContext";
 import { MessageBody } from "../ChatScreen/types";
+import { useChat } from "../ChatScreen/useChat";
+import { CurrentUserContext } from "../CurrentUser/CurrentUserContext";
 
 const useStyles = makeStyles(theme => ({
   root: () => ({
@@ -38,14 +39,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export function InputField(props: InputFieldProps) {
-  const styles = useStyles()
+  const { chatId } = props;
+  const styles = useStyles();
+  const currentUser = useContext(CurrentUserContext);
   const [message, setMessage] = useState<string>("")
-  const { sendMessage } = useContext(ChatContext)
+  const { sendMessage } = useChat({id: chatId, currentUserId: currentUser.id})
 
   const handleSubmit = async () => {
     const messageBody: MessageBody = { message, type: "string", authorId: "1" }
     setMessage("")
-    await sendMessage("1", messageBody)
+    await sendMessage(chatId, messageBody)
   }
 
 

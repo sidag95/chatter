@@ -1,6 +1,4 @@
-import React, {useState, useCallback} from "react";
-import { getDefaultChatMessages } from "../Api/mocks";
-import { useRealtimeConnection } from "../Api/useRealtimeConnnection";
+import React, {useState} from "react";
 import { ChatContext } from "./ChatContext"
 import { MessageList, ChatContextControllerProps, MessageBody, Message } from "./types";
 
@@ -10,25 +8,6 @@ export function ChatContextController(props: ChatContextControllerProps) {
   const [hasLoaded, setHasLoaded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  
-  const onData = useCallback(
-    (messageBody: any) => {
-      const message: Message = {
-        id: `${Math.random()}`,
-        authorId: "2",
-        message: messageBody,
-        type: "string"
-      }
-      setChat(chat => [...chat, message])
-    },
-    []
-  )
-  
-  // const hasAuthorized = useCallback(() => {
-  //   return true;
-  // }, [])
-
-  // const send = useRealtimeConnection({ onData, hasAuthorized, id: "1" })
 
   async function getChat(id: string, currentUserId: string) {
     try {

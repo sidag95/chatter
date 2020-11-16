@@ -5,6 +5,7 @@ const chatData: {[key: string]: MessageList} = {}
 
 export function useChatContext(props: UseChatContextProps): UseChatContext {
   const { id } = props;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dummy, setDummy] = useState<number>(0); // HACK! dummy var to re render component
 
   const setChat = useCallback((message: MessageList, cursor: number) => {

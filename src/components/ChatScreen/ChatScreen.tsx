@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
 export function ChatScreen(props: ChatScreenProps) {
   const { chatId } = props;
   const currentUser = useContext(CurrentUserContext);
-  // const { chat, getChat } = useContext(ChatContext)
   const { chat, populateMessages } = useChat({id: chatId, currentUserId: currentUser.id});
   const styles = useStyles()
 

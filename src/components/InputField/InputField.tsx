@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import {FormControl, FilledInput, makeStyles} from "@material-ui/core"
 import { InputFieldProps } from "./types";
-import { ChatContext } from "../ChatScreen/ChatContext";
 import { MessageBody } from "../ChatScreen/types";
 import { useChat } from "../ChatScreen/useChat";
 import { CurrentUserContext } from "../CurrentUser/CurrentUserContext";

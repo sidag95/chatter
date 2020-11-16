@@ -5,7 +5,6 @@ import { Layout } from "../Layout/Layout";
 import { MessageScreenContainer } from "../MessageScreen/MessageScreenContainer";
 import { CurrentUserController } from "../CurrentUser/CurrentUserController";
 import { ContactListController } from "../ContactList/ContactListController";
-import { ChatContextController } from "../ChatScreen/ChatContextController";
 
 export function HomeScreen() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -14,10 +13,8 @@ export function HomeScreen() {
       <Layout>
         <CurrentUserController>
           <ContactListController>
-            <ChatContextController>
-              <NavigationScreen selectChat={setSelectedChatId} />
-              <MessageScreenContainer chatId={selectedChatId} />
-            </ChatContextController>
+            <NavigationScreen selectChat={setSelectedChatId} />
+            <MessageScreenContainer chatId={selectedChatId} />
           </ContactListController>
         </CurrentUserController>
       </Layout>
